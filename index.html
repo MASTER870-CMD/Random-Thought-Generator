@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Quote Generator</title>
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Google Font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #FFD700, #FF69B4, #87CEFA);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+.quote-card {
+    max-width: 500px;
+    background-color: #ffffffcc;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.quote-card:hover {
+    transform: translateY(-10px);
+    background-color: #ffffff;
+}
+#quote {
+    min-height: 80px;
+    font-size: 1.2rem;
+    transition: all 0.5s ease;
+}
+#author {
+    color: #555;
+    margin-bottom: 15px;
+}
+.btn-primary {
+    background-color: #FF69B4;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #FF1493;
+    transform: scale(1.1);
+}
+.share-btn {
+    margin-top: 10px;
+    margin-right: 5px;
+}
+</style>
+</head>
+<body>
+<div class="quote-card">
+    <h1 class="mb-4">Random Quote Generator</h1>
+    <p id="quote">Click the button to generate a quote!</p>
+    <p id="author"></p>
+    <button id="newQuote" class="btn btn-primary mt-3">Generate Quote</button>
+    <div class="mt-3">
+        <button id="shareTwitter" class="btn btn-info share-btn">Twitter</button>
+        <button id="shareLinkedIn" class="btn btn-primary share-btn">LinkedIn</button>
+        <button id="shareWhatsApp" class="btn btn-success share-btn">WhatsApp</button>
+    </div>
+    <audio id="sound" src="beep.mp3"></audio>
+</div>
+
+<script>
+const quotes = [
+    { quote: "The best way to get started is to quit talking and begin doing.", author: "Walt Disney" },
+    { quote: "Don’t let yesterday take up too much of today.", author: "Will Rogers" },
+    { quote: "You learn more from failure than from success. Don’t let it stop you.", author: "Unknown" },
+    { quote: "It’s not whether you get knocked down, it’s whether you get up.", author: "Vince Lombardi" },
+    { quote: "If you are working on something exciting, it will keep you motivated.", author: "Unknown" },
+    { quote: "Success is not in what you have, but who you are.", author: "Bo Bennett" },
+    { quote: "Your limitation—it’s only your imagination.", author: "Unknown" },
+    { quote: "Push yourself, because no one else is going to do it for you.", author: "Unknown" },
+    { quote: "Great things never come from comfort zones.", author: "Unknown" },
+    { quote: "Dream it. Wish it. Do it.", author: "Unknown" },
+    { quote: "Stay positive, work hard, make it happen.", author: "Unknown" },
+    { quote: "Hard work beats talent when talent doesn’t work hard.", author: "Tim Notke" },
+    { quote: "Don’t watch the clock; do what it does. Keep going.", author: "Sam Levenson" },
+    { quote: "Success doesn’t just find you. You have to go out and get it.", author: "Unknown" },
+    { quote: "The key to success is to focus on goals, not obstacles.", author: "Unknown" },
+    { quote: "Believe you can and you’re halfway there.", author: "Theodore Roosevelt" },
+    { quote: "Don’t stop when you’re tired. Stop when you’re done.", author: "Unknown" },
+    { quote: "Do something today that your future self will thank you for.", author: "Sean Patrick Flanery" },
+    { quote: "Little things make big days.", author: "Unknown" },
+    { quote: "It always seems impossible until it’s done.", author: "Nelson Mandela" }
+];
+
+const quoteText = document.getElementById('quote');
+const quoteAuthor = document.getElementById('author');
+const newQuoteBtn = document.getElementById('newQuote');
+const sound = document.getElementById('sound');
+let currentQuote = "";
+
+function generateQuote() {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const randomQuote = quotes[randomIndex];
+    currentQuote = `"${randomQuote.quote}" - ${randomQuote.author}`;
+
+    // Play local sound
+    sound.currentTime = 0;
+    sound.play();
+
+    // Fade animation
+    quoteText.style.opacity = 0;
+    quoteAuthor.style.opacity = 0;
+
+    setTimeout(() => {
+        quoteText.textContent = `"${randomQuote.quote}"`;
+        quoteAuthor.textContent = `- ${randomQuote.author}`;
+        quoteText.style.opacity = 1;
+        quoteAuthor.style.opacity = 1;
+    }, 300);
+}
+
+newQuoteBtn.addEventListener('click', generateQuote);
+
+// Share Buttons
+document.getElementById('shareTwitter').addEventListener('click', () => {
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(currentQuote)}`;
+    window.open(url, '_blank');
+});
+document.getElementById('shareLinkedIn').addEventListener('click', () => {
+    const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentQuote)}`;
+    window.open(url, '_blank');
+});
+document.getElementById('shareWhatsApp').addEventListener('click', () => {
+    const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(currentQuote)}`;
+    window.open(url, '_blank');
+});
+</script>
+</body>
+</html>
